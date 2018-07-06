@@ -21,112 +21,132 @@ buildscript {
     }
 }
 
-apply plugin: 'nu.studer.jooq'
-apply plugin: 'org.flywaydb.flyway'
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
+subprojects{
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
 
-group = 'com.johnsong.android'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = 1.8
+    group = 'com.johnsong.android'
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = 1.8
 
-repositories {
-    mavenCentral()
-}
-
-bootJar{
-    baseName = 'gs-messaging-rabbitmq'
-    version = '0.1.0'
-}
-
-
-ext {
-    springCloudVersion = 'Finchley.RELEASE'
-}
-
-dependencies {
-//    compile('org.springframework.boot:spring-boot-starter-aop')
-    //compile('org.springframework.boot:spring-boot-starter-data-mongodb')
-    //compile('org.springframework.boot:spring-boot-starter-data-mongodb-reactive')
-    compile('org.springframework.boot:spring-boot-starter-data-redis')
-    compile('org.springframework.boot:spring-boot-starter-data-rest')
-    compile('org.springframework.boot:spring-boot-starter-hateoas')
-    compile('org.springframework.boot:spring-boot-starter-jooq')
-    compile('org.springframework.boot:spring-boot-starter-web')
-    compile('org.springframework.boot:spring-boot-starter-test')
-//    compile('org.springframework.boot:spring-boot-starter-webflux')
-    compile('org.flywaydb:flyway-core')
-    //compile('org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.2')
-    compile('org.springframework.cloud:spring-cloud-starter')
-    compile('org.springframework.boot:spring-boot-starter-thymeleaf')
-    compile databaseLibrary
-    jooqRuntime databaseLibrary
-//    jooqRuntime 'com.johnsong.android.spring.config:JPrefixJooqStrategyConfig'
-//    compile('org.jooq:jooq')
-    compile('org.jooq:jooq-codegen:3.10.8')
-    compile('org.springframework.boot:spring-boot-starter-amqp')
-    compile group:'io.springfox',name:'springfox-swagger2',version:'2.2.2'
-    compile group:'io.springfox',name:'springfox-swagger-ui',version:'2.2.2'
-    //Logger
-    compile('org.springframework.boot:spring-boot-starter-logging')
-    compile('org.springframework.boot:spring-boot-starter-log4j2')
-
-}
-
-
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    repositories {
+        mavenCentral()
     }
-}
 
+    dependencies {
+        //Logger
+        compile('org.springframework.boot:spring-boot-starter-logging')
+        compile('org.springframework.boot:spring-boot-starter-log4j2')
+    }
 
-
-flyway {
-    url = databaseUrl
-    user = databaseUsername
-    password = databasePassword
-    schemas = ['banana']
-}
-
-jooq {
-    version = '3.10.0'
-    edition = 'OSS'
-    banana(sourceSets.main){
-        jdbc {
-            driver = 'org.mariadb.jdbc.Driver'
-            url = databaseUrl
-            user = databaseUsername
-            password = databasePassword
+    task initSourceFolders {
+        sourceSets*.java.srcDirs*.each {
+            if( !it.exists() ) {
+                it.mkdirs()
+            }
         }
-        generator {
-            name = 'org.jooq.util.DefaultGenerator'
-            strategy {
-                name = 'org.jooq.util.DefaultGeneratorStrategy'
-            }
-            strategy {
-                name = 'org.jooq.util.JPrefixJooqStrategyConfig'
-            }
-            database {
-                name = 'org.jooq.util.mariadb.MariaDBDatabase'
-                inputSchema = 'banana'
-                outputSchema = 'banana'
-            }
-            generate {
-                relations = true
-                deprecated = false
-                records = true
-                immutablePojos = true
-                fluentSetters = true
-            }
-            target {
-                packageName = 'com.johnsong.android.spring.jooq'
-                directory = 'src/main/java'
+
+        sourceSets*.resources.srcDirs*.each {
+            if( !it.exists() ) {
+                it.mkdirs()
             }
         }
     }
+
 }
 
-generateBananaJooqSchemaSource.dependsOn flywayMigrate
+project(':springbootpjt'){
+    bootJar{
+        baseName = 'gs-messaging-rabbitmq'
+        version = '0.1.0'
+    }
+
+    dependencies {
+        compile('org.springframework.boot:spring-boot-starter-data-redis')
+        compile('org.springframework.boot:spring-boot-starter-data-rest')
+        compile('org.springframework.boot:spring-boot-starter-hateoas')
+        compile('org.springframework.boot:spring-boot-starter-web')
+        compile('org.springframework.boot:spring-boot-starter-test')
+        compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+        compile('org.springframework.boot:spring-boot-starter-amqp')
+        compile group:'io.springfox',name:'springfox-swagger2',version:'2.2.2'
+        compile group:'io.springfox',name:'springfox-swagger-ui',version:'2.2.2'
+        compile project(':jooqflywaypjt')
+
+    }
+}
+
+project(':strategypjt'){
+    dependencies{
+        compile('org.jooq:jooq-codegen:3.10.8')
+    }
+}
+
+project(':jooqflywaypjt'){
+    apply plugin: 'nu.studer.jooq'
+    apply plugin: 'org.flywaydb.flyway'
+//    plugin{
+//        dependencies{
+//            jooqRuntime project(':strategypjt')
+//        }
+//    }
+
+    dependencies{
+        compile('org.springframework.boot:spring-boot-starter-jooq')
+        compile('org.flywaydb:flyway-core')
+        compile databaseLibrary
+        jooqRuntime databaseLibrary
+        jooqRuntime project(':strategypjt')
+    }
+
+    flyway {
+        url = databaseUrl
+        user = databaseUsername
+        password = databasePassword
+        schemas = ['banana']
+    }
+
+    jooq {
+        version = '3.10.0'
+        edition = 'OSS'
+        banana(sourceSets.main){
+            jdbc {
+                driver = 'org.mariadb.jdbc.Driver'
+                url = databaseUrl
+                user = databaseUsername
+                password = databasePassword
+            }
+            generator {
+                name = 'org.jooq.util.DefaultGenerator'
+                strategy {
+                    name = 'org.jooq.util.DefaultGeneratorStrategy'
+//                    prefix = 'J'
+                }
+                strategy {
+                    name = 'com.johnsong.android.strategy.JPrefixJooqStrategyConfig'
+                }
+                database {
+                    name = 'org.jooq.util.mariadb.MariaDBDatabase'
+                    inputSchema = 'banana'
+                    outputSchema = 'banana'
+                }
+                generate {
+                    relations = true
+                    deprecated = false
+                    records = true
+                    immutablePojos = true
+                    fluentSetters = true
+                }
+                target {
+                    packageName = 'com.johnsong.android.jooq'
+                    directory = 'src/main/java'
+                }
+            }
+        }
+    }
+
+    generateBananaJooqSchemaSource.dependsOn flywayMigrate
+
+}

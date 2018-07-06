@@ -1,1 +1,4 @@
-rootProject.name = 'spring'
+rootProject.name = 'springboot-rest'
+include 'springbootpjt'
+include 'jooqflywaypjt'
+include 'strategypjt'
