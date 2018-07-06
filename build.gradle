@@ -124,9 +124,9 @@ project(':jooqflywaypjt'){
                     name = 'org.jooq.util.DefaultGeneratorStrategy'
 //                    prefix = 'J'
                 }
-                strategy {
-                    name = 'com.johnsong.android.strategy.JPrefixJooqStrategyConfig'
-                }
+//                strategy {
+//                    name = 'com.johnsong.android.strategy.JPrefixJooqStrategyConfig'
+//                }
                 database {
                     name = 'org.jooq.util.mariadb.MariaDBDatabase'
                     inputSchema = 'banana'
@@ -137,6 +137,8 @@ project(':jooqflywaypjt'){
                     deprecated = false
                     records = true
                     immutablePojos = true
+//                    pojos = true
+//                    daos= true
                     fluentSetters = true
                 }
                 target {

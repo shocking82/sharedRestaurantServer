@@ -1,5 +1,4 @@
 package com.johnsong.android.spring.service;
-import com.johnsong.android.spring.jooq.tables.records.UserRecord;
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.johnsong.android.spring.jooq.tables.User.USER;
+import static com.johnsong.android.jooq.Tables.USER;
 
 
 @Service
@@ -20,11 +19,12 @@ public class UserService {
         this.dsl = dsl;
     }
 
-    public UserRecord getUser(String name){
+    public  com.johnsong.android.jooq.tables.pojos.User getUser(String name){
         return dsl.select()
                 .from(USER)
-                .where(USER.NAME.like("%" + name + "%"))
-                .fetchOneInto(UserRecord.class);
+                .where(USER.NAME.like("%" + name))
+                .limit(1)
+                .fetchOneInto(com.johnsong.android.jooq.tables.pojos.User.class);
 
 //        return new UserRecord(
 //                record.getValue(USER.USER_ID).intValue(),
@@ -35,10 +35,10 @@ public class UserService {
 //                );
 
     }
-    public List<UserRecord> getUserList(){
+    public List<com.johnsong.android.jooq.tables.pojos.User> getUserList(){
         return dsl.select()
                 .from(USER)
-                .fetchInto(UserRecord.class);
+                .fetchInto(com.johnsong.android.jooq.tables.pojos.User.class);
 
 
     }

@@ -1,6 +1,6 @@
 package com.johnsong.android.spring.controller;
 
-import com.johnsong.android.spring.jooq.tables.records.UserRecord;
+import com.johnsong.android.jooq.tables.records.UserRecord;
 import com.johnsong.android.spring.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,10 +23,10 @@ public class GetUserController {
 
     @ApiOperation(value = "One User 정보")
     @RequestMapping(value = "/user/info/{name}", method = RequestMethod.GET)
-    public ResponseEntity<UserRecord> getUserInfo(@PathVariable("name") String name){
+    public ResponseEntity<com.johnsong.android.jooq.tables.pojos.User> getUserInfo(@PathVariable("name") String name){
         logger.info("================One User 정보=====================");
         logger.info("Name:[" + name + "]");
-        UserRecord userRecord = service.getUser(name);
+        com.johnsong.android.jooq.tables.pojos.User userRecord = service.getUser(name);
         if(userRecord == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -35,9 +35,9 @@ public class GetUserController {
 
     @ApiOperation(value = "All User 정보")
     @RequestMapping(value = "/user/", method = RequestMethod.POST)
-    public ResponseEntity<List<UserRecord>> getUserInfo(){
-        logger.debug("================All User 정보=====================");
-        List<UserRecord> userRecord = service.getUserList();
+    public ResponseEntity<List<com.johnsong.android.jooq.tables.pojos.User>> getUserInfo(){
+        logger.info("================All User 정보=====================");
+        List<com.johnsong.android.jooq.tables.pojos.User> userRecord = service.getUserList();
         if(userRecord == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
