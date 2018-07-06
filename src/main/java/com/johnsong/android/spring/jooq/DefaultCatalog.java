@@ -4,9 +4,6 @@
 package com.johnsong.android.spring.jooq;
 
 
-import com.johnsong.android.spring.jooq.banana.Banana;
-import com.johnsong.android.spring.jooq.information_schema.InformationSchema;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,7 +27,7 @@ import org.jooq.impl.CatalogImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class DefaultCatalog extends CatalogImpl {
 
-    private static final long serialVersionUID = -730287791;
+    private static final long serialVersionUID = 2115661350;
 
     /**
      * The reference instance of <code></code>
@@ -40,12 +37,7 @@ public class DefaultCatalog extends CatalogImpl {
     /**
      * The schema <code>banana</code>.
      */
-    public final Banana BANANA = com.johnsong.android.spring.jooq.banana.Banana.BANANA;
-
-    /**
-     * The schema <code>information_schema</code>.
-     */
-    public final InformationSchema INFORMATION_SCHEMA = com.johnsong.android.spring.jooq.information_schema.InformationSchema.INFORMATION_SCHEMA;
+    public final Banana BANANA = com.johnsong.android.spring.jooq.Banana.BANANA;
 
     /**
      * No further instances allowed
@@ -63,7 +55,6 @@ public class DefaultCatalog extends CatalogImpl {
 
     private final List<Schema> getSchemas0() {
         return Arrays.<Schema>asList(
-            Banana.BANANA,
-            InformationSchema.INFORMATION_SCHEMA);
+            Banana.BANANA);
     }
 }

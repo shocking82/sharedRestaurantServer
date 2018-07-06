@@ -47,7 +47,7 @@ ext {
 }
 
 dependencies {
-    compile('org.springframework.boot:spring-boot-starter-aop')
+//    compile('org.springframework.boot:spring-boot-starter-aop')
     //compile('org.springframework.boot:spring-boot-starter-data-mongodb')
     //compile('org.springframework.boot:spring-boot-starter-data-mongodb-reactive')
     compile('org.springframework.boot:spring-boot-starter-data-redis')
@@ -55,28 +55,33 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-hateoas')
     compile('org.springframework.boot:spring-boot-starter-jooq')
     compile('org.springframework.boot:spring-boot-starter-web')
-    compile('org.springframework.boot:spring-boot-starter-webflux')
+    compile('org.springframework.boot:spring-boot-starter-test')
+//    compile('org.springframework.boot:spring-boot-starter-webflux')
     compile('org.flywaydb:flyway-core')
     //compile('org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.2')
     compile('org.springframework.cloud:spring-cloud-starter')
-    testCompile('org.springframework.boot:spring-boot-starter-test')
-    testCompile('io.projectreactor:reactor-test')
-    testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
     compile('org.springframework.boot:spring-boot-starter-thymeleaf')
     compile databaseLibrary
     jooqRuntime databaseLibrary
-    compile('org.jooq:jooq')
+//    jooqRuntime 'com.johnsong.android.spring.config:JPrefixJooqStrategyConfig'
+//    compile('org.jooq:jooq')
+    compile('org.jooq:jooq-codegen:3.10.8')
     compile('org.springframework.boot:spring-boot-starter-amqp')
     compile group:'io.springfox',name:'springfox-swagger2',version:'2.2.2'
     compile group:'io.springfox',name:'springfox-swagger-ui',version:'2.2.2'
+    //Logger
+    compile('org.springframework.boot:spring-boot-starter-logging')
+    compile('org.springframework.boot:spring-boot-starter-log4j2')
 
 }
+
 
 dependencyManagement {
     imports {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
     }
 }
+
 
 
 flyway {
@@ -101,9 +106,13 @@ jooq {
             strategy {
                 name = 'org.jooq.util.DefaultGeneratorStrategy'
             }
+            strategy {
+                name = 'org.jooq.util.JPrefixJooqStrategyConfig'
+            }
             database {
                 name = 'org.jooq.util.mariadb.MariaDBDatabase'
-//                inputSchema = 'public'
+                inputSchema = 'banana'
+                outputSchema = 'banana'
             }
             generate {
                 relations = true
@@ -119,7 +128,5 @@ jooq {
         }
     }
 }
-flywayClean.doFirst {
-    delete 'src/main/generate/jooq'
-}
+
 generateBananaJooqSchemaSource.dependsOn flywayMigrate
