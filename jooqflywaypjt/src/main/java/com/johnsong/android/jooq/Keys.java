@@ -7,13 +7,11 @@ package com.johnsong.android.jooq;
 import com.johnsong.android.jooq.tables.City;
 import com.johnsong.android.jooq.tables.FlywaySchemaHistory;
 import com.johnsong.android.jooq.tables.User;
-import com.johnsong.android.jooq.tables.records.CityRecord;
-import com.johnsong.android.jooq.tables.records.FlywaySchemaHistoryRecord;
-import com.johnsong.android.jooq.tables.records.UserRecord;
 
 import javax.annotation.Generated;
 
 import org.jooq.Identity;
+import org.jooq.Record;
 import org.jooq.UniqueKey;
 import org.jooq.impl.AbstractKeys;
 
@@ -36,15 +34,15 @@ public class Keys {
     // IDENTITY definitions
     // -------------------------------------------------------------------------
 
-    public static final Identity<UserRecord, Integer> IDENTITY_USER = Identities0.IDENTITY_USER;
+    public static final Identity<Record, Integer> IDENTITY_USER = Identities0.IDENTITY_USER;
 
     // -------------------------------------------------------------------------
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final UniqueKey<CityRecord> KEY_CITY_PRIMARY = UniqueKeys0.KEY_CITY_PRIMARY;
-    public static final UniqueKey<FlywaySchemaHistoryRecord> KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY = UniqueKeys0.KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY;
-    public static final UniqueKey<UserRecord> KEY_USER_PRIMARY = UniqueKeys0.KEY_USER_PRIMARY;
+    public static final UniqueKey<Record> KEY_CITY_PRIMARY = UniqueKeys0.KEY_CITY_PRIMARY;
+    public static final UniqueKey<Record> KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY = UniqueKeys0.KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY;
+    public static final UniqueKey<Record> KEY_USER_PRIMARY = UniqueKeys0.KEY_USER_PRIMARY;
 
     // -------------------------------------------------------------------------
     // FOREIGN KEY definitions
@@ -56,12 +54,12 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     private static class Identities0 extends AbstractKeys {
-        public static Identity<UserRecord, Integer> IDENTITY_USER = createIdentity(User.USER, User.USER.USER_ID);
+        public static Identity<Record, Integer> IDENTITY_USER = createIdentity(User.USER, User.USER.USER_ID);
     }
 
     private static class UniqueKeys0 extends AbstractKeys {
-        public static final UniqueKey<CityRecord> KEY_CITY_PRIMARY = createUniqueKey(City.CITY, "KEY_City_PRIMARY", City.CITY.CITY_ID);
-        public static final UniqueKey<FlywaySchemaHistoryRecord> KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY = createUniqueKey(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, "KEY_flyway_schema_history_PRIMARY", FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK);
-        public static final UniqueKey<UserRecord> KEY_USER_PRIMARY = createUniqueKey(User.USER, "KEY_User_PRIMARY", User.USER.USER_ID);
+        public static final UniqueKey<Record> KEY_CITY_PRIMARY = createUniqueKey(City.CITY, "KEY_City_PRIMARY", City.CITY.CITY_ID);
+        public static final UniqueKey<Record> KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY = createUniqueKey(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, "KEY_flyway_schema_history_PRIMARY", FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK);
+        public static final UniqueKey<Record> KEY_USER_PRIMARY = createUniqueKey(User.USER, "KEY_User_PRIMARY", User.USER.USER_ID);
     }
 }

@@ -1,6 +1,6 @@
 package com.johnsong.android.spring.controller;
 
-import com.johnsong.android.jooq.tables.records.UserRecord;
+
 import com.johnsong.android.spring.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

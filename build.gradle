@@ -135,7 +135,7 @@ project(':jooqflywaypjt'){
                 generate {
                     relations = true
                     deprecated = false
-                    records = true
+                    records = false
                     immutablePojos = true
 //                    pojos = true
 //                    daos= true
